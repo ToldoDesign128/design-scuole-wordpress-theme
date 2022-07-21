@@ -1,15 +1,15 @@
 // Bootstrap Italia - funzioni e variabili colore
-@import '../../components/bootstrap-italia-master/src/scss/functions';
-@import '../../components/bootstrap-italia-master/src/scss/utilities/colors_vars';
+@import '../../node_modules/bootstrap-italia/src/scss/functions';
+@import '../../node_modules/bootstrap-italia/src/scss/utilities/colors_vars';
 
 // variabili colore scuole
 @import 'override/colors';
 
 // Bootstrap Italia - variables
-@import '../../components/bootstrap-italia-master/src/scss/variables';
+@import '../../node_modules/bootstrap-italia/src/scss/variables';
 
 // Bootstrap Italia - classi colore
-@import '../../components/bootstrap-italia-master/src/scss/utilities/colors';
+@import '../../node_modules/bootstrap-italia/src/scss/utilities/colors';
 
 // Bootstrap - functions & variables
 @import '../../node_modules/bootstrap/scss/functions';
@@ -19,7 +19,7 @@
 @import '../../node_modules/bootstrap/scss/mixins';
 
 // Bootstrap Italia - mixins buttons
-@import '../../components/bootstrap-italia-master/src/scss/custom/mixins/buttons';
+@import '../../node_modules/bootstrap-italia/src/scss/custom/mixins/buttons';
 
 // Bootstrap - text emphasis, buttons, background, custom forms & text
 @import '../../node_modules/bootstrap/scss/mixins/text-emphasis';
@@ -30,7 +30,7 @@
 @import '../../node_modules/bootstrap/scss/custom-forms';
 
 // Bootstrap Italia - Customizzazioni e nuovi componenti
-@import '../../components/bootstrap-italia-master/src/scss/custom/buttons';
+@import '../../node_modules/bootstrap-italia/src/scss/custom/buttons';
 
 
 ////////////////////////////////////////////////////////////
@@ -89,3 +89,5 @@
 @import 'parts/dot-values';
 @import 'parts/video';
 @import 'parts/social-buttons';
+
+
