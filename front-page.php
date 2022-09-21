@@ -55,24 +55,68 @@ get_header();
         <h4 class="d-lg-none">Scopri di più</h4>
           <div class="row mt-4 mt-lg-0">
             <div class="col-6 col-md-3">
-              <a class="btn-lg-default-outline" href="#" target="blank">
+              <!-- <a class="btn-lg-default-outline" href="#" target="blank">
                   <button><span>DIDATTICA</span> <p class="mb-0">Corso ITE serale</p></button>
-              </a>
+              </a> -->
+              <?php
+                get_template_part("template-parts/common/button", null, array(
+                  'text' => 'Corso ITE serale',
+                  'text_above' => 'DIDATTICA',
+                  'id' => 'XXXX',
+                  'href' => '#TBD',
+                  'class' => '',
+                  'variant' => 'btn-lg-default-outline',
+                  // 'variant' => 'lg-default-outline',
+                ));
+              ?>
             </div>
             <div class="col-6 col-md-3">
-              <a class="btn-lg-default-outline" href="https://martinomartini.local/didattica-2/offerta-formativa/" target="blank">
+              <!-- <a class="btn-lg-default-outline" href="https://martinomartini.local/didattica-2/offerta-formativa/" target="blank">
                 <button><span>DIDATTICA</span> <p class="mb-0">Offerta formativa</p></button>
-              </a>
+              </a> -->
+              <?php
+                get_template_part("template-parts/common/button", null, array(
+                  'text' => 'Offerta formativa',
+                  'text_above' => 'DIDATTICA',
+                  'id' => 'XXXX',
+                  'href' => '#TBD',
+                  'class' => '',
+                  'variant' => 'btn-lg-default-outline',
+                  // 'variant' => 'lg-default-outline',
+                ));
+              ?>
             </div>
             <div class="col-6 col-md-3">
-              <a class="btn-lg-secondary-outline" href="#" target="blank">
+              <!-- <a class="btn-lg-secondary-outline" href="#" target="blank">
                 <button><span>SERVIZI</span> <p class="mb-0">Open days</p></button>
-              </a>
+              </a> -->
+              <?php
+                get_template_part("template-parts/common/button", null, array(
+                  'text' => 'Open days',
+                  'text_above' => 'SERVIZI',
+                  'id' => 'XXXX',
+                  'href' => '#TBD',
+                  'class' => '',
+                  'variant' => 'btn-lg-secondary-outline',
+                  // 'variant' => 'lg-default-outline',
+                ));
+              ?>
             </div>
             <div class="col-6 col-md-3">
-              <a class="btn-lg-secondary-outline" href="#" target="blank">
+              <!-- <a class="btn-lg-secondary-outline" href="#" target="blank">
                 <button><span>SERVIZI</span> <p class="mb-0">ASL</p></button>
-              </a>
+              </a> -->
+              <?php
+                get_template_part("template-parts/common/button", null, array(
+                  'text' => 'ASL',
+                  'text_above' => 'SERVIZI',
+                  'id' => 'XXXX',
+                  'href' => '#TBD',
+                  'class' => '',
+                  'variant' => 'btn-lg-secondary-outline',
+                  // 'variant' => 'lg-default-outline',
+                ));
+              ?>
             </div>
           </div><!--.row -->
         </div><!--#button-navigazione -->
@@ -99,6 +143,7 @@ get_header();
 
         <div id="gli-spazi-txt" class="col-lg-6 col-12">
           <h4>Gli spazi</h4>
+      
           <p>La scuola si compone di due sedi: la sede di via Perlasca e la sede di via Filzi. L’edificio di via Perlasca , costruito secondo criteri improntati al risparmio energetico e alla sostenibilità ambientale, ospita gli studenti in ambienti luminosi e spaziosi, con laboratori attrezzati, una grande palestra, un auditorium e ampi spazi verdi all’esterno. L’edificio di via Filzi, sede scolastica storica di Mezzolombardo, è stato di recente rinnovato per ospitare classi e laboratori dell’istituto in crescita negli ultimi anni scolastici. </p>
           <a class="btn-lg-default-outline" href="https://martinomartini.local/luogo/"><button class="w-auto">Scopri</button></a>
         </div><!--#gli-spazi-txt -->
