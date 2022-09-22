@@ -92,7 +92,7 @@
                   'variant' => 'btn-lg-default-outline',
                   // 'variant' => 'lg-default-outline',
                 ));
-              ?>
+            ?>
 
           </div>
 
@@ -114,7 +114,7 @@
                   'variant' => 'btn-lg-default-outline',
                   // 'variant' => 'lg-default-outline',
                 ));
-              ?>
+            ?>
 
           </div>
 
@@ -136,7 +136,7 @@
                   'variant' => 'btn-lg-secondary-outline',
                   // 'variant' => 'lg-default-outline',
                 ));
-              ?>
+            ?>
 
           </div>
 
@@ -158,7 +158,7 @@
                   'variant' => 'btn-lg-secondary-outline',
                   // 'variant' => 'lg-default-outline',
                 ));
-              ?>
+            ?>
 
           </div>
 
