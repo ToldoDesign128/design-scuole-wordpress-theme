@@ -41,14 +41,12 @@
 
             </div>
 
-            <div class="card-body">
+            <div class="card-body row">
 
-              <p class="card-title primary"> <?php the_title(); ?> </p>
+              <p class="card-title primary col-12"> <?php the_title(); ?> </p>
 
-              <a href="<?php the_permalink();?>" class="btn-mini-default"> 
-
+              <a href="<?php the_permalink();?>" class="btn-mini-default col-5"> 
                 <button class="w-auto">Scopri</button>
-
               </a>
 
             </div>
@@ -64,9 +62,7 @@
         <div class="button-container col-12 mt-4 mt-lg-0 pr-3">
 
           <a class="btn-lg-default-outline w-100" href="<?php get_page_by_path('novità')?>" class="col-12 p-0">
-
             <button>Vai alla sezione</button>
-
           </a>
 
         </div>    

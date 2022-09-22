@@ -65,6 +65,17 @@
           <a class="btn-lg-default-outline w-100" href=#"">
             <button>Vedi il calendario completo</button>
           </a> -->
+          <?php
+                get_template_part("template-parts/common/button", null, array(
+                  'text' => '',
+                  'text_above' => 'Vedi il calendario completo',
+                  'id' => 'XXXX',
+                  'href' => '#TBD',
+                  'class' => '',
+                  'variant' => 'btn-lg-default-outline',
+                  // 'variant' => 'lg-default-outline',
+                ));
+            ?>
 
         </div>
         <!--.row -->
