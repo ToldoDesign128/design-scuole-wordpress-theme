@@ -66,7 +66,7 @@ main .primary, main .fw-regular.primary, main .text-xs.primary, main .text-sm.pr
   letter-spacing: -0.2625px;
 }
 
-.main-container .btn-lg-disabled-outline button, .main-container .btn-lg-secondary-outline button, .main-container .btn-lg-secondary button, .main-container .btn-lg-default-outline button, .main-container .btn-lg-default button, .main-container .btn-mini-disabled button, .main-container .btn-sm-disabled button, .main-container .btn-md-disabled button, .main-container .btn-lg-disabled button, .h6, h6 {
+.martini-card__body__content > h3, .martini-card__body__content > h3 > a, .main-container .btn-lg-disabled-outline button, .main-container .btn-lg-secondary-outline button, .main-container .btn-lg-secondary button, .main-container .btn-lg-default-outline button, .main-container .btn-lg-default button, .main-container .btn-mini-disabled button, .main-container .btn-sm-disabled button, .main-container .btn-md-disabled button, .main-container .btn-lg-disabled button, .h6, h6 {
   font-size: 16px;
   font-size: 1rem;
   font-size: clamp(16px, -8px + 4.16666667vw, 24px);
@@ -88,7 +88,7 @@ main :not(button, a) > .font-body, main :not(button, a) > p, main :not(button, a
   line-height: clamp(24px, 12px + 2.08333333vw, 28px);
 }
 
-.main-container .btn-sm-disabled-outline button, .main-container .btn-sm-secondary-outline button, .main-container .btn-sm-secondary button, .main-container .btn-sm-disabled button, .main-container .btn-sm-default-outline button, .main-container .btn-sm-default button, .main-container .btn-lg-disabled-outline button span, .main-container .btn-lg-secondary-outline button span, .main-container .btn-lg-secondary button span, .main-container .btn-lg-disabled button span, .main-container .btn-lg-default-outline button span, .main-container .btn-lg-default button span, #sidebar #quotes, .card .card-body .card-title, .text-sm {
+.martini-card__body__content > p, .main-container .btn-sm-disabled-outline button, .main-container .btn-sm-secondary-outline button, .main-container .btn-sm-secondary button, .main-container .btn-sm-disabled button, .main-container .btn-sm-default-outline button, .main-container .btn-sm-default button, .main-container .btn-lg-disabled-outline button span, .main-container .btn-lg-secondary-outline button span, .main-container .btn-lg-secondary button span, .main-container .btn-lg-disabled button span, .main-container .btn-lg-default-outline button span, .main-container .btn-lg-default button span, #sidebar #quotes, .card .card-body .card-title, .text-sm {
   font-size: 14px;
   font-size: 0.875rem;
   font-size: clamp(14px, 8px + 1.04166667vw, 16px);
@@ -1354,7 +1354,6 @@ label > span {
 }
 
 #progetti-home .container-progetti article.card-progetti {
-  height: 10rem;
   height: 5.5rem;
   display: flex;
   gap: 1rem;
@@ -1892,6 +1891,116 @@ body {
 
 .main-container a[id^=btn-] p + p {
   margin-top: 0.62rem;
+}
+
+.resize-container {
+  resize: both;
+  overflow: hidden auto;
+  outline: 1px solid tomato;
+  margin: 1rem;
+}
+
+.martini-card__body {
+  border-radius: 0.25rem;
+  overflow: clip;
+  background-color: #F0F0F3;
+  display: flex;
+  flex-direction: column;
+}
+
+.martini-card-horizontal .martini-card__body {
+  flex-direction: row;
+  align-items: center;
+  background-color: transparent;
+}
+
+.martini-card-horizontal .martini-card__body__image {
+  width: 10rem;
+}
+
+.martini-card:not(.martini-card-horizontal) .martini-card__body__image {
+  width: 100%;
+}
+
+.martini-card__body__image {
+  background-image: url("/wp-content/themes/design-scuole-wordpress-theme/assets/images_martini/logo-custom.png");
+  background-position: center;
+  background-size: cover;
+  position: relative;
+}
+
+.martini-card__body__image::after {
+  content: "";
+  display: block;
+  padding-bottom: min(50vh, 100%);
+}
+
+.martini-card__body__image > img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.martini-card__body__image__badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 10px;
+}
+
+.martini-card__body__image__badge .badges-wrapper {
+  text-align: end;
+}
+
+.martini-card__body__image__badge .badges-wrapper .badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.2rem;
+}
+
+.martini-card__body__image__badge .badges-wrapper .badges a {
+  font-size: clamp(0.2rem, 0.1264367816rem + 3.67816092vw, 1rem);
+  margin: 0 !important;
+}
+
+.martini-card__body__content {
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  padding: 1rem;
+}
+
+.martini-card__body__content > h3, .martini-card__body__content > h3 > a {
+  color: #1260A4;
+}
+
+.martini-card__body__content > p {
+  display: none;
+}
+
+.martini-card-horizontal .martini-card__body__content > p {
+  display: block;
+}
+
+.martini-card__body__content > a {
+  min-width: -webkit-fit-content;
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+  width: 30%;
+  display: block;
+  max-width: 10rem;
+}
+
+.martini-card-horizontal .martini-card__body__content > a {
+  display: none;
+}
+
+.martini-card__body__content > a > button {
+  margin-bottom: 0 !important;
 }
 
 .footer--wrapper {

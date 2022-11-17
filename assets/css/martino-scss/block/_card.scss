@@ -1,0 +1,115 @@
+@use "sass:selector";
+
+.resize-container {
+    resize: both;
+    overflow: hidden auto;
+    outline: 1px solid tomato;
+    margin: 1rem;
+}
+.martini-card {
+    // width: 360px;
+    // width: 100%;
+
+    &__body {
+        border-radius: .25rem;
+        overflow: clip;
+        background-color: $surface;
+        // outline: 1px solid tomato;
+        display: flex;
+        flex-direction: column;
+        
+        // @include unify-parent(".martini-card-horizontal") {
+        @at-root .martini-card-horizontal & {
+            flex-direction: row;
+            align-items: center;
+            background-color: transparent;
+            &__image {
+                width: 10rem;
+            }
+        }
+        @at-root .martini-card:not(.martini-card-horizontal) & {
+            &__image {
+                width: 100%;
+            }
+        }
+        &__image {
+            // width: 100%;
+            background-image: url("/wp-content/themes/design-scuole-wordpress-theme/assets/images_martini/logo-custom.png");
+            background-position: center;
+            background-size: cover;
+
+            position: relative;
+            &::after {
+                content: "";
+                display: block;
+                padding-bottom: min(50vh, 100%);
+            }
+            
+            &>img {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            &__badge {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 0 10px;
+
+
+                .badges-wrapper {
+                    text-align: end;
+                    .badges {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: flex-end;
+                        gap: .2rem;
+                        
+                        a {
+                            font-size: s-clamp(32px, 380px, .2rem, 1rem);;
+                            margin: 0 !important;
+                            // margin-bottom: .2rem !important;
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        &__content {
+            min-width: fit-content;
+            padding: 1rem;
+
+            &>h3 {
+                &, &>a{
+                    color: $primary;
+                    @include h6;
+                }
+            }
+
+            &>p {
+                @include text-sm;
+                display: none;
+
+                @at-root .martini-card-horizontal & {
+                    display: block;
+                }
+            }
+
+            &>a {
+                @at-root .martini-card-horizontal & {
+                    display: none;
+                }
+                min-width: fit-content;
+                width: 30%;
+                display: block;
+                max-width: 10rem;
+                &>button {
+                    margin-bottom: 0 !important;
+                }
+            }
+        }
+    }
+}
