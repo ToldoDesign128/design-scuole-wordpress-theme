@@ -161,7 +161,9 @@
     /* Style the caret/arrow */
 .cmb-type-taxonomy-multicheck-hierarchy-child .caret {
     cursor: pointer;
-    user-select: none; /* Prevent text selection */
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none; /* Prevent text selection */
 }
 
 /* Create the caret/arrow with a unicode, and style it */
@@ -486,3 +488,4 @@ luogo
     width: 54px;
     text-align: center;
 }
+
