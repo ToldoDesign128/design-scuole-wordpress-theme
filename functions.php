@@ -437,3 +437,17 @@ function get_file_from_zip($zipfile, $filename)
 	// echo 'failed';
 	return $file;
 }
+
+
+$dotenv_file = __DIR__ . '/.env';
+
+if (file_exists($dotenv_file)) {
+	// readfile($dotenv_file);
+	function livereload(){
+		console_log("[Live Reload Server]");
+		?>
+			<script src="http://localhost:35729/livereload.js"></script>
+		<?php
+    }
+    add_action('wp_footer', 'livereload');
+}

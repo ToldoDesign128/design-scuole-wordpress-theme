@@ -1,7 +1,15 @@
 // webpack.mix.js
 let mix = require('laravel-mix');
+let LiveReloadPlugin = require('webpack-livereload-plugin');
 
 mix.webpackConfig({
+    plugins: [
+        (new LiveReloadPlugin({
+            // https://github.com/livereload/livereload-js/blob/master/src/options.js
+            ignore: /(node_modules)|(vendor)/,
+            ext: "js,css"
+        })),
+    ],
     module: {
         rules: [
             {
