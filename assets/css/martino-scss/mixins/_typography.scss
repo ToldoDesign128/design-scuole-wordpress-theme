@@ -127,3 +127,16 @@ $tmp-color-list: ();
   @include extend-type(fw-regular, $color, $size, $extend)
 }
 
+// 
+
+@mixin font-family ($type: sans-serif) {
+  @if ($type == 'sans-serif') {
+    font-family: "Titillium Web", Geneva, Tahoma, sans-serif; 
+  }
+  @if ($type == 'serif') {
+    font-family: "Lora", Georgia, serif;
+  }
+  @if ($type == 'mono') {
+    font-family: "Roboto Mono", monospace;
+  }
+}
