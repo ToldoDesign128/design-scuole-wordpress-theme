@@ -62,6 +62,7 @@ function martini_add_pon_metaboxes() {
             'smart'         => __( 'Smart class primo ciclo', 'cmb2' ),
             'smartsec'      => __( 'Smart class secondo ciclo' ),
             'socialità'     => __( 'Socialità, apprendimento, accoglienza', 'cmb2' ),
+            'progetti_trasversali'     => __( 'Percorsi per le competenze trasversali e orientamento (PCTO) all estero', 'cmb2' ),
         ),
     ) );
 

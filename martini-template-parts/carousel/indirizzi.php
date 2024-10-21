@@ -7,7 +7,7 @@
     $attributes = array(
         'id' => 'crsl-0',
         'title' => 'LICEI',
-        'limit' => 4,
+        'limit' => 8,
         'labels' => array(),
         'sections' => array(),
     );
@@ -29,7 +29,7 @@
     $attributes = array(
         'id' => 'crsl-1',
         'title' => 'ISTITUTI TECNICI',
-        'limit' => 4,
+        'limit' => 8,
         'labels' => array(),
         'sections' => array(),
     );

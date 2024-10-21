@@ -58,6 +58,7 @@ function martini_add_pnrr_metaboxes() {
             'innovativi'    => __( 'Ambienti di apprendimento innovativi', 'cmb2' ),
             'stem'    => __( 'Azioni di potenziamento delle competenze STEM e multilinguistiche', 'cmb2' ),
             'formazione'    => __( 'Formazione del personale scolastico per la transizione digitale', 'cmb2' ),
+            'divari_apprendimenti'    => __( 'Riduzione dei divari negli apprendimenti', 'cmb2' ),
         ),
     ) );
 

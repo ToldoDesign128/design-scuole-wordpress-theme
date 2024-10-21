@@ -10,7 +10,7 @@ get_header();
             <div class="row">
 
                 <div class="col-12">
-                <h2>Calendario d'istituto</h2>
+                <h2>Agenda degli impegni</h2>
                     <?php echo do_shortcode('[calendar id="613"]'); ?>
                 </div>
 
