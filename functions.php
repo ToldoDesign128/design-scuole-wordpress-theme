@@ -464,6 +464,8 @@ require dirname(__FILE__).'/functions-parts/cpt-pnrr.php';
 require dirname(__FILE__).'/functions-parts/cpt-fse.php';
 require dirname(__FILE__).'/functions-parts/cpt-libri.php';
 require dirname(__FILE__).'/functions-parts/cpt-progetti.php';
+require dirname(__FILE__).'/functions-parts/cpt-pn2127.php';
+
 
 /* Customize Back-end
 ------------------------*/

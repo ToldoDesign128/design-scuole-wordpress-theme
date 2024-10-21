@@ -44,11 +44,14 @@
             <a class="btn-lg-default w-100" href="registri" target="blank">
               <button>Registri</button>
             </a>
+            <a class="btn-lg-default-outline w-100" href="https://www.istruzione.provincia.tn.it/apps/famiglia/it/login;requestedurl=L2l0L2hvbWU%253D;sessionState=none" target="blank">
+              <button>Pagamenti</button>
+            </a>
             <a class="btn-lg-default-outline w-100" href="https://www.martinomartini.eu/gestore/" target="blank">
               <button>GestOre</button>
             </a>
-            <a class="btn-lg-default-outline w-100" href="https://servizi.martinomartini.eu/index.php/component/users/?view=login&Itemid=101" target="blank">
-              <button>Area Riservata</button>
+            <a class="btn-lg-default-outline w-100" href="https://www.martinomartini.eu/GestionePermessi/pagine/frontoffice.php" target="blank">
+              <button>Permessi uscita</button>
             </a>
             <?php
             // todo: Query homepage's list of buttons from database and not hardcoding it
