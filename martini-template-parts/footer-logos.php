@@ -4,7 +4,7 @@ $loop = new WP_Query(array(
     'post_status'       => 'publish',
     'orderby'           => 'menu_order', 
     'order'             => 'ASC',
-    'posts_per_page'    => 5,
+    'posts_per_page'    => -1,
 ));
 if ($loop->have_posts()) {
 ?>
@@ -62,6 +62,7 @@ if ($loop->have_posts()) {
 
         (!!Splide && !!element) && (new Splide(element, {
             type: 'loop',
+            autoplay: 'pause',
             pagination: false,
             arrows: false,
             autoWidth: true,
