@@ -3,7 +3,7 @@ if (!is_array($args) ) return;
 if (!isset($args['sections']) ) return;
 if (!isset($args['labels']) ) return;
 if (!isset($args['id']) ) $args['id'] = 'crsl';
-if (!isset($args['limit']) ) $args['limit'] = 4;
+if (!isset($args['limit']) ) $args['limit'] = 8;
 $length = count($args['labels']);
 if ($length > $args['limit']) $length = $args['limit'];
 ?>
