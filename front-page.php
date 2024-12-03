@@ -50,7 +50,7 @@
             <a class="btn-lg-default-outline w-100" href="https://www.martinomartini.eu/gestore/" target="blank">
               <button>GestOre</button>
             </a>
-            <a class="btn-lg-default-outline w-100" href="https://www.martinomartini.eu/GestionePermessi/pagine/frontoffice.php" target="blank">
+            <a class="btn-lg-default-outline w-100" href="https://www.martinomartini.eu/GestionePermessi/pagine/indexLogin.php" target="blank">
               <button>Permessi uscita</button>
             </a>
             <?php
