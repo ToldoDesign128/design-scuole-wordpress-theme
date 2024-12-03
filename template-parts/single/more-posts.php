@@ -8,7 +8,7 @@ if(!$related_type)
 $oldpost = $post;
 	
 if ( is_array( $posts_array ) && count( $posts_array ) ) { ?>
-	<section class="" id="art-par-correlati">
+	<section class="container" id="art-par-correlati">
 	<div class="pt-3">
 
 		<div class="row variable-gutters">

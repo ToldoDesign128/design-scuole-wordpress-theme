@@ -26,6 +26,29 @@ if( $titolo_pagina == 'opzione scienze applicate in 4 anni (LOS4)') { ?>
 
 else;
 
+// LMI
+if( $titolo_pagina == 'Liceo economico Made in Italy (LMI)') { ?>  
+    <section>
+        <div id="hero-indirizzi" class="container-fluid bg-martini-acqua">
+            <div id="content" class="row align-items-center">
+                <div class="col-lg-6 offset-lg-3">
+                    <h1> <?php the_title(); ?> </h1>
+                </div>
+                <div id="icona-indirizzo" class="col-lg-2  text-center">
+                    <?php if ( has_post_thumbnail() ) : ?>
+                        <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+                            <?php the_post_thumbnail(); ?>
+                        </a>
+                    <?php endif; ?> 
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    }
+
+else;
+
 
 // LOS5
 if( $titolo_pagina == 'opzione scienze applicate in 5 anni (LOS5)') { ?>
