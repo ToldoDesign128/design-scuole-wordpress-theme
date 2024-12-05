@@ -104,10 +104,10 @@
 
         <div class="row mt-4 mt-lg-0">
           <div class="col-6 col-md-3 p-2">
-            <a class="btn-lg-default-outline" href="didattica-2/offerta-formativa">
+            <a class="btn-lg-default-outline" href="https://docs.google.com/forms/d/e/1FAIpQLSe3Esg-hx0BElmFon78qKkAnNQme_zaODZjm5-NpEqG7uqnow/viewform?usp=sf_link" target="_blank">
               <button>
-                <span>DIDATTICA</span>
-                <p class="mb-0">Offerta formativa</p>
+                <span>NO BULLISMO</span>
+                <p class="mb-0">Segnalazione Anonima</p>
               </button>
             </a>
           </div>
@@ -222,8 +222,13 @@
         <div id="storia-txt" class="col-lg-5 col-12">
 
           <h4>Martino Martini</h4>
-          <p>Missionario gesuita nato nel 1614 a Trento, Martino Martini fu un noto geografo e cartografo che visse a lungo nella Cina imperiale, viaggiando entro i suoi confini allo scopo di raccogliere informazioni di natura scientifica e geografica. Notevole fu il suo contributo alla conoscenza dell’impero cinese e della sua cultura, che rese accessibile all’occidente anche grazie alla redazione della prima grammatica della lingua cinese.
-            Il nostro istituto, che da sempre promuove diversi progetti nell’ambito dell’internazionalizzazione, prosegue idealmente la missione di Martino Martini riconoscendo il valore fondamentale per la nostra società della conoscenza approfondita del nuovo e del diverso e promuovendo la diffusione dei saperi tradizionali quale strumento ineludibile per la formazione di cittadini consapevoli e responsabili.</p>
+          <p>
+            Missionario gesuita nato nel 1614 a Trento, Martino Martini fu un noto geografo e cartografo che visse a lungo nella Cina imperiale, viaggiando entro i suoi confini allo scopo di raccogliere informazioni di natura scientifica e geografica. Notevole fu il suo contributo alla conoscenza dell’impero cinese e della sua cultura, che rese accessibile all’occidente anche grazie alla redazione della prima grammatica della lingua cinese.
+            Il nostro istituto, che da sempre promuove diversi progetti nell’ambito dell’internazionalizzazione, prosegue idealmente la missione di Martino Martini riconoscendo il valore fondamentale per la nostra società della conoscenza approfondita del nuovo e del diverso e promuovendo la diffusione dei saperi tradizionali quale strumento ineludibile per la formazione di cittadini consapevoli e responsabili.
+          </p>
+          <a class="btn-lg-default-outline" href="https://sites.google.com/martinomartini.eu/martini/home?authuser=0" target="_blank">
+            <button class="w-auto">Scopri</button>
+          </a>
 
         </div>
         <!--#storia-txt -->
