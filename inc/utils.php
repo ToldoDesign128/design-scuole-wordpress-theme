@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Wrapper function around cmb2_get_option
  * @since  0.1.0
@@ -6,26 +7,27 @@
  * @param  mixed  $default Optional default value
  * @return mixed           Option value
  */
-if(!function_exists("dsi_get_option")) {
-	function dsi_get_option( $key = '', $type = "dsi_options", $default = false ) {
-		if ( function_exists( 'cmb2_get_option' ) ) {
-			// Use cmb2_get_option as it passes through some key filters.
-			return cmb2_get_option( $type, $key, $default );
-		}
+if (!function_exists("dsi_get_option")) {
+    function dsi_get_option($key = '', $type = "dsi_options", $default = false)
+    {
+        if (function_exists('cmb2_get_option')) {
+            // Use cmb2_get_option as it passes through some key filters.
+            return cmb2_get_option($type, $key, $default);
+        }
 
-		// Fallback to get_option if CMB2 is not loaded yet.
-		$opts = get_option( $type, $default );
+        // Fallback to get_option if CMB2 is not loaded yet.
+        $opts = get_option($type, $default);
 
-		$val = $default;
+        $val = $default;
 
-		if ( 'all' == $key ) {
-			$val = $opts;
-		} elseif ( is_array( $opts ) && array_key_exists( $key, $opts ) && false !== $opts[ $key ] ) {
-			$val = $opts[ $key ];
-		}
+        if ('all' == $key) {
+            $val = $opts;
+        } elseif (is_array($opts) && array_key_exists($key, $opts) && false !== $opts[$key]) {
+            $val = $opts[$key];
+        }
 
-		return $val;
-	}
+        return $val;
+    }
 }
 
 /**
@@ -34,14 +36,22 @@ if(!function_exists("dsi_get_option")) {
  * @param  int     $post_id
  * @return bool
  */
-if(!function_exists("dsi_members_can_user_view_post")) {
-    function dsi_members_can_user_view_post($user_id, $post_id) {
-        if(!function_exists("members_can_user_view_post")) {
+if (!function_exists("dsi_members_can_user_view_post")) {
+    function dsi_members_can_user_view_post($user_id, $post_id)
+    {
+        if (!function_exists("members_can_user_view_post")) {
             return true;
-        }else{
-            return members_can_user_view_post($user_id, $post_id);
+        } else {
+            try {
+                return members_can_user_view_post($user_id, $post_id);
+            } catch (Exception $e) {
+                // Se c'è un errore con il plugin Members, permettiamo l'accesso per evitare problemi
+                if (WP_DEBUG) {
+                    error_log("Errore in members_can_user_view_post per post ID {$post_id}: " . $e->getMessage());
+                }
+                return true;
+            }
         }
-
     }
 }
 
@@ -50,62 +60,63 @@ if(!function_exists("dsi_members_can_user_view_post")) {
  * @param string $key
  * @return mixed meta_value
  */
-if(!function_exists("dsi_get_meta")){
-	function dsi_get_meta( $key = '', $prefix = "", $post_id = "") {
-        if ( ! dsi_members_can_user_view_post(get_current_user_id(), $post_id) ) return false;
+if (!function_exists("dsi_get_meta")) {
+    function dsi_get_meta($key = '', $prefix = "", $post_id = "")
+    {
+        if (! dsi_members_can_user_view_post(get_current_user_id(), $post_id)) return false;
 
-		if($post_id == "")
-			$post_id = get_the_ID();
+        if ($post_id == "")
+            $post_id = get_the_ID();
 
-		$post_type = get_post_type($post_id);
+        $post_type = get_post_type($post_id);
 
-		if($prefix != "")
-			return get_post_meta( $post_id, $prefix.$key, true );
+        if ($prefix != "")
+            return get_post_meta($post_id, $prefix . $key, true);
 
-        if(is_singular("servizio") || (isset($post_type) && $post_type == "servizio")){
+        if (is_singular("servizio") || (isset($post_type) && $post_type == "servizio")) {
             $prefix = '_dsi_servizio_';
-            return get_post_meta( $post_id, $prefix.$key, true );
-        }else if(is_singular("indirizzo") || (isset($post_type) && $post_type == "indirizzo")){
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("indirizzo") || (isset($post_type) && $post_type == "indirizzo")) {
             $prefix = '_dsi_indirizzo_';
-            return get_post_meta( $post_id, $prefix.$key, true );
-        }else if (is_singular("luogo")  || (isset($post_type) && $post_type == "luogo")) {
-			$prefix = '_dsi_luogo_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("struttura")  || (isset($post_type) && $post_type == "struttura")) {
-			$prefix = '_dsi_struttura_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("evento")  || (isset($post_type) && $post_type == "evento")) {
-			$prefix = '_dsi_evento_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("documento")  || (isset($post_type) && $post_type == "documento")) {
-			$prefix = '_dsi_documento_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("post")  || (isset($post_type) && $post_type == "post")) {
-			$prefix = '_dsi_articolo_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}/*else if (is_singular("programma_materia")  || (isset($post_type) && $post_type == "programma_materia")) { // todo: programma materia
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("luogo")  || (isset($post_type) && $post_type == "luogo")) {
+            $prefix = '_dsi_luogo_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("struttura")  || (isset($post_type) && $post_type == "struttura")) {
+            $prefix = '_dsi_struttura_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("evento")  || (isset($post_type) && $post_type == "evento")) {
+            $prefix = '_dsi_evento_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("documento")  || (isset($post_type) && $post_type == "documento")) {
+            $prefix = '_dsi_documento_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("post")  || (isset($post_type) && $post_type == "post")) {
+            $prefix = '_dsi_articolo_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        }/*else if (is_singular("programma_materia")  || (isset($post_type) && $post_type == "programma_materia")) { // todo: programma materia
 			$prefix = '_dsi_materia_';
 			return get_post_meta( $post_id, $prefix . $key, true );
-		}*/else if (is_singular("scheda_progetto")  || (isset($post_type) && $post_type == "scheda_progetto")) {
-			$prefix = '_dsi_scheda_progetto_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("scheda_didattica")  || (isset($post_type) && $post_type == "scheda_didattica")) {
-			$prefix = '_dsi_scheda_didattica_';
-			return get_post_meta( $post_id, $prefix . $key, true );
-		}else if (is_singular("circolare")  || (isset($post_type) && $post_type == "circolare")) {
+		}*/ else if (is_singular("scheda_progetto")  || (isset($post_type) && $post_type == "scheda_progetto")) {
+            $prefix = '_dsi_scheda_progetto_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("scheda_didattica")  || (isset($post_type) && $post_type == "scheda_didattica")) {
+            $prefix = '_dsi_scheda_didattica_';
+            return get_post_meta($post_id, $prefix . $key, true);
+        } else if (is_singular("circolare")  || (isset($post_type) && $post_type == "circolare")) {
             $prefix = '_dsi_circolare_';
-            return get_post_meta( $post_id, $prefix . $key, true );
+            return get_post_meta($post_id, $prefix . $key, true);
         }
 
-		return get_post_meta( $post_id, $key, true );
-	}
+        return get_post_meta($post_id, $key, true);
+    }
 }
 
 
-if(!function_exists("dsi_get_term_meta")){
-    function dsi_get_term_meta( $key , $prefix, $term_id) {
-            return get_term_meta($term_id, $prefix.$key, true );
-
+if (!function_exists("dsi_get_term_meta")) {
+    function dsi_get_term_meta($key, $prefix, $term_id)
+    {
+        return get_term_meta($term_id, $prefix . $key, true);
     }
 }
 /**
@@ -113,55 +124,55 @@ if(!function_exists("dsi_get_term_meta")){
  * @param object user
  * @return string url
  */
-if(!function_exists("dsi_get_user_avatar")){
-	function dsi_get_user_avatar( $user = false, $size=250 ) {
-		if(!$user && is_user_logged_in()){
-			$user = wp_get_current_user();
-		}
+if (!function_exists("dsi_get_user_avatar")) {
+    function dsi_get_user_avatar($user = false, $size = 250)
+    {
+        if (!$user && is_user_logged_in()) {
+            $user = wp_get_current_user();
+        }
         $foto_id = null;
-		$foto_url = get_the_author_meta('_dsi_persona_foto', $user->ID);
-		if($foto_url)
+        $foto_url = get_the_author_meta('_dsi_persona_foto', $user->ID);
+        if ($foto_url)
             $foto_id = attachment_url_to_postid($foto_url);
 
-        if(isset($foto_id) && $foto_id)
+        if (isset($foto_id) && $foto_id)
             $avatar = wp_get_attachment_image_url($foto_id, "item-thumb");
-		else
-		    $avatar = get_avatar_url( $user->ID, array("size" => $size) );
+        else
+            $avatar = get_avatar_url($user->ID, array("size" => $size));
 
-		$avatar = apply_filters("dsi_avatar_url", $avatar, $user);
-		return $avatar;
-	}
+        $avatar = apply_filters("dsi_avatar_url", $avatar, $user);
+        return $avatar;
+    }
 }
 
 
-add_filter( 'get_avatar' , 'dsi_custom_avatar' , 1 , 5 );
+add_filter('get_avatar', 'dsi_custom_avatar', 1, 5);
 
-function dsi_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
+function dsi_custom_avatar($avatar, $id_or_email, $size, $default, $alt)
+{
     $user = false;
 
-    if ( is_numeric( $id_or_email ) ) {
+    if (is_numeric($id_or_email)) {
 
         $id = (int) $id_or_email;
-        $user = get_user_by( 'id' , $id );
+        $user = get_user_by('id', $id);
+    } elseif (is_object($id_or_email)) {
 
-    } elseif ( is_object( $id_or_email ) ) {
-
-        if ( ! empty( $id_or_email->user_id ) ) {
+        if (! empty($id_or_email->user_id)) {
             $id = (int) $id_or_email->user_id;
-            $user = get_user_by( 'id' , $id );
+            $user = get_user_by('id', $id);
         }
-
     } else {
-        $user = get_user_by( 'email', $id_or_email );
+        $user = get_user_by('email', $id_or_email);
     }
 
-    if ( $user && is_object( $user ) ) {
+    if ($user && is_object($user)) {
 
         $foto_url = get_the_author_meta('_dsi_persona_foto', $user->ID);
-        if($foto_url)
+        if ($foto_url)
             $foto_id = attachment_url_to_postid($foto_url);
 
-        if(isset($foto_id) && $foto_id) {
+        if (isset($foto_id) && $foto_id) {
             $avatar = wp_get_attachment_image_url($foto_id, "item-thumb");
             $avatar = "<img alt='{$alt}' src='{$avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
         }
@@ -177,48 +188,46 @@ function dsi_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
  * @param object user
  * @return string role
  */
-if(!function_exists("dsi_get_user_role")) {
-	function dsi_get_user_role( $user = false ) {
-		global $wp_roles;
+if (!function_exists("dsi_get_user_role")) {
+    function dsi_get_user_role($user = false)
+    {
+        global $wp_roles;
 
 
-		if ( ! $user && is_user_logged_in() ) {
-			$user = wp_get_current_user();
-		}
+        if (! $user && is_user_logged_in()) {
+            $user = wp_get_current_user();
+        }
 
         $ruolo_scuola = get_the_author_meta('_dsi_persona_ruolo_scuola', $user->ID);
         $tipo_posto = get_the_author_meta('_dsi_persona_tipo_posto', $user->ID);
         $ruolo_non_docente = get_the_author_meta('_dsi_persona_ruolo_non_docente', $user->ID);
 
         $str_ruolo = "";
-        if($ruolo_scuola == "dirigente"){
+        if ($ruolo_scuola == "dirigente") {
             $str_ruolo .= "Dirigente Scolastico ";
-        }else if($ruolo_scuola == "docente"){
+        } else if ($ruolo_scuola == "docente") {
             $str_ruolo .= "Docente ";
 
-            if($tipo_posto == "sostegno"){
+            if ($tipo_posto == "sostegno") {
                 $str_ruolo .= "di sostegno ";
             }
+        } else if ($ruolo_scuola == "personaleata") {
 
-        }else if($ruolo_scuola == "personaleata"){
-
-            if($ruolo_non_docente == "direttore-amministrativo"){
+            if ($ruolo_non_docente == "direttore-amministrativo") {
                 $str_ruolo .= "Direttore amministrativo ";
-            }else if($ruolo_non_docente == "tecnico"){
+            } else if ($ruolo_non_docente == "tecnico") {
                 $str_ruolo .= "Personale tecnico ";
-            }else if($ruolo_non_docente == "amministrativo"){
+            } else if ($ruolo_non_docente == "amministrativo") {
                 $str_ruolo .= "Personale amministrativo ";
-            }else if($ruolo_non_docente == "collaboratore"){
+            } else if ($ruolo_non_docente == "collaboratore") {
                 $str_ruolo .= "Collaboratore scolastico";
-            }else{
+            } else {
                 $str_ruolo .= "Non docente ";
             }
-
-
         }
 
         return $str_ruolo;
-	}
+    }
 }
 
 
@@ -228,15 +237,16 @@ if(!function_exists("dsi_get_user_role")) {
  * Wrapper function for agomenti taxonomy list
  * @return array
  */
-if(!function_exists("dsi_get_tipologia_struttura_of_post")) {
-    function dsi_get_tipologia_struttura_of_post( $singular = false ) {
+if (!function_exists("dsi_get_tipologia_struttura_of_post")) {
+    function dsi_get_tipologia_struttura_of_post($singular = false)
+    {
         global $post;
 
-        if ( ! $singular) {
+        if (! $singular) {
             $singular = $post;
         }
 
-        $argomenti_terms = wp_get_object_terms( $singular->ID, 'tipologia-struttura' );
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'tipologia-struttura');
         return $argomenti_terms;
     }
 }
@@ -246,15 +256,16 @@ if(!function_exists("dsi_get_tipologia_struttura_of_post")) {
  * Wrapper function for agomenti taxonomy list
  * @return array
  */
-if(!function_exists("dsi_get_tipologia_servizio_of_post")) {
-    function dsi_get_tipologia_servizio_of_post( $singular = false ) {
+if (!function_exists("dsi_get_tipologia_servizio_of_post")) {
+    function dsi_get_tipologia_servizio_of_post($singular = false)
+    {
         global $post;
 
-        if ( ! $singular) {
+        if (! $singular) {
             $singular = $post;
         }
 
-        $argomenti_terms = wp_get_object_terms( $singular->ID, 'tipologia-servizio' );
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'tipologia-servizio');
         return $argomenti_terms;
     }
 }
@@ -264,15 +275,16 @@ if(!function_exists("dsi_get_tipologia_servizio_of_post")) {
  * Wrapper function for agomenti taxonomy list
  * @return array arguomenti
  */
-if(!function_exists("dsi_get_tipologia_luogo_of_post")) {
-    function dsi_get_tipologia_luogo_of_post( $singular = false ) {
+if (!function_exists("dsi_get_tipologia_luogo_of_post")) {
+    function dsi_get_tipologia_luogo_of_post($singular = false)
+    {
         global $post;
 
-        if ( ! $singular) {
+        if (! $singular) {
             $singular = $post;
         }
 
-        $argomenti_terms = wp_get_object_terms( $singular->ID, 'tipologia-luogo' );
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'tipologia-luogo');
         return $argomenti_terms;
     }
 }
@@ -281,15 +293,16 @@ if(!function_exists("dsi_get_tipologia_luogo_of_post")) {
  * Wrapper function for agomenti taxonomy list
  * @return array arguomenti
  */
-if(!function_exists("dsi_get_tipologia_articolo_of_post")) {
-    function dsi_get_tipologia_articolo_of_post( $singular = false ) {
+if (!function_exists("dsi_get_tipologia_articolo_of_post")) {
+    function dsi_get_tipologia_articolo_of_post($singular = false)
+    {
         global $post;
 
-        if ( ! $singular) {
+        if (! $singular) {
             $singular = $post;
         }
 
-        $argomenti_terms = wp_get_object_terms( $singular->ID, 'tipologia-articolo' );
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'tipologia-articolo');
         return $argomenti_terms;
     }
 }
@@ -298,31 +311,33 @@ if(!function_exists("dsi_get_tipologia_articolo_of_post")) {
  * Wrapper function for agomenti taxonomy list
  * @return array arguomenti
  */
-if(!function_exists("dsi_get_argomenti_of_post")) {
-	function dsi_get_argomenti_of_post( $singular = false ) {
-		global $post;
+if (!function_exists("dsi_get_argomenti_of_post")) {
+    function dsi_get_argomenti_of_post($singular = false)
+    {
+        global $post;
 
-		if ( ! $singular) {
-			$singular = $post;
-		}
+        if (! $singular) {
+            $singular = $post;
+        }
 
-		$argomenti_terms = wp_get_object_terms( $singular->ID, 'post_tag' );
-		return $argomenti_terms;
-	}
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'post_tag');
+        return $argomenti_terms;
+    }
 }
 
 /**
  * recupero i percorsi di studio della scuola
  */
-if(!function_exists("dsi_get_percorsi_of_scuola")) {
-    function dsi_get_percorsi_of_scuola($singular = false ) {
+if (!function_exists("dsi_get_percorsi_of_scuola")) {
+    function dsi_get_percorsi_of_scuola($singular = false)
+    {
         global $post;
 
-        if ( ! $singular) {
+        if (! $singular) {
             $singular = $post;
         }
 
-        $argomenti_terms = wp_get_object_terms( $singular->ID, 'percorsi-di-studio' );
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'percorsi-di-studio');
         return $argomenti_terms;
     }
 }
@@ -352,17 +367,18 @@ if(!function_exists("dsi_get_materie_of_post")) {
  * Wrapper function for agomenti taxonomy list
  * @return array arguomenti
  */
-if(!function_exists("dsi_get_classi_of_post")) {
-	function dsi_get_classi_of_post( $singular = false ) {
-		global $post;
+if (!function_exists("dsi_get_classi_of_post")) {
+    function dsi_get_classi_of_post($singular = false)
+    {
+        global $post;
 
-		if ( ! $singular) {
-			$singular = $post;
-		}
+        if (! $singular) {
+            $singular = $post;
+        }
 
-		$argomenti_terms = wp_get_object_terms( $singular->ID, 'classe' );
-		return $argomenti_terms;
-	}
+        $argomenti_terms = wp_get_object_terms($singular->ID, 'classe');
+        return $argomenti_terms;
+    }
 }
 
 
@@ -370,17 +386,18 @@ if(!function_exists("dsi_get_classi_of_post")) {
  * Function to get mapbox access token
  * @return string accesstoken
  */
-if(!function_exists("dsi_get_mapbox_access_token")) {
-	function dsi_get_mapbox_access_token() {
-		global $post;
+if (!function_exists("dsi_get_mapbox_access_token")) {
+    function dsi_get_mapbox_access_token()
+    {
+        global $post;
 
-		$accesstoken = dsi_get_option( "mapbox_key", "setup" );
-		if ( trim( $accesstoken ) == "" ) {
-			$accesstoken = DSI_ACCESSTOKEN_MAPBOX;
-		}
+        $accesstoken = dsi_get_option("mapbox_key", "setup");
+        if (trim($accesstoken) == "") {
+            $accesstoken = DSI_ACCESSTOKEN_MAPBOX;
+        }
 
-		return $accesstoken;
-	}
+        return $accesstoken;
+    }
 }
 
 /**
@@ -388,30 +405,31 @@ if(!function_exists("dsi_get_mapbox_access_token")) {
  * @param $post
  *
  */
-function dsi_get_date_evento($post){
-	if($post->post_type == "evento")
-		$prefix = '_dsi_evento_';
-	else if($post->post_type == "scheda_progetto")
-		$prefix = '_dsi_scheda_progetto_';
+function dsi_get_date_evento($post)
+{
+    if ($post->post_type == "evento")
+        $prefix = '_dsi_evento_';
+    else if ($post->post_type == "scheda_progetto")
+        $prefix = '_dsi_scheda_progetto_';
 
-	$ret = "";
-	$timestamp_inizio = dsi_get_meta("timestamp_inizio", $prefix, $post->ID);
-	$timestamp_fine= dsi_get_meta("timestamp_fine", $prefix, $post->ID);
-	if($timestamp_inizio >= $timestamp_fine){
-		$ret .=  date_i18n("j F Y", $timestamp_inizio);
-		//$ret .= __(" alle ", "design_scuole_italia");
-		//$ret .=  date_i18n("H:i", $timestamp_inizio);
-		return $ret;
-	}
+    $ret = "";
+    $timestamp_inizio = dsi_get_meta("timestamp_inizio", $prefix, $post->ID);
+    $timestamp_fine = dsi_get_meta("timestamp_fine", $prefix, $post->ID);
+    if ($timestamp_inizio >= $timestamp_fine) {
+        $ret .=  date_i18n("j F Y", $timestamp_inizio);
+        //$ret .= __(" alle ", "design_scuole_italia");
+        //$ret .=  date_i18n("H:i", $timestamp_inizio);
+        return $ret;
+    }
 
-	$data_inizio = date_i18n("j F Y", $timestamp_inizio);
-	$data_fine = date_i18n("j F Y", $timestamp_fine);
-	$ora_inizio = date_i18n("H:i", $timestamp_inizio);
-	$ora_fine = date_i18n("H:i", $timestamp_fine);
-	if($data_inizio == $data_fine){
-		$ret .= __("Il ", "design_scuole_italia");
-		$ret .= $data_inizio;
-		/*
+    $data_inizio = date_i18n("j F Y", $timestamp_inizio);
+    $data_fine = date_i18n("j F Y", $timestamp_fine);
+    $ora_inizio = date_i18n("H:i", $timestamp_inizio);
+    $ora_fine = date_i18n("H:i", $timestamp_fine);
+    if ($data_inizio == $data_fine) {
+        $ret .= __("Il ", "design_scuole_italia");
+        $ret .= $data_inizio;
+        /*
 		if($post->post_type == "evento"){
 			$ret .= __(" dalle ", "design_scuole_italia");
 			$ret .= $ora_inizio;
@@ -419,26 +437,24 @@ function dsi_get_date_evento($post){
 			$ret .= $ora_fine;
 
 		}*/
-
-	}else{
-		$ret .= __("dal ", "design_scuole_italia");
-		$ret .= $data_inizio;
-		/*
+    } else {
+        $ret .= __("dal ", "design_scuole_italia");
+        $ret .= $data_inizio;
+        /*
 		if($post->post_type == "evento") {
 			$ret .= __( " alle ", "design_scuole_italia" );
 			$ret .= $ora_inizio;
 		}*/
-		$ret .= __(" al ", "design_scuole_italia");
-		$ret .= $data_fine;
-		/*
+        $ret .= __(" al ", "design_scuole_italia");
+        $ret .= $data_fine;
+        /*
 		if($post->post_type == "evento") {
 			$ret .= __( " alle ", "design_scuole_italia" );
 			$ret .= $ora_fine;
 		}*/
-	}
+    }
 
-	return $ret;
-
+    return $ret;
 }
 
 
@@ -462,31 +478,33 @@ function dsi_get_date_evento($post){
  *       echo bootstrap_pagination($query);
  *     ?>
  */
-function dsi_bootstrap_pagination( \WP_Query $wp_query = null, $echo = true ) {
-	if ( null === $wp_query ) {
-		global $wp_query;
-	}
-	$pages = paginate_links( [
-			'base'         => str_replace( 999999999, '%#%', esc_url( get_pagenum_link( 999999999 ) ) ),
-			'format'       => '%#%',
-			'current'      => max( 1, get_query_var( 'paged' ) ),
-			'total'        => $wp_query->max_num_pages,
-			'type'         => 'array',
-			'show_all'     => false,
-			'end_size'     => 3,
-			'mid_size'     => 1,
-			'prev_next'    => true,
-			'prev_text'    => __( '<svg class="icon icon-primary"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#svg-arrow-left-small"></use></svg><span class="sr-only">Pagina precedente</span>' ),
-			'next_text'    => __( '<span class="sr-only">Pagina successiva</span><svg class="icon icon-primary"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#svg-arrow-right-small"></use></svg>' ),
-			'add_args'     => false,
-			'add_fragment' => ''
-		]
-	);
-	if ( is_array( $pages ) ) {
-		//$paged = ( get_query_var( 'paged' ) == 0 ) ? 1 : get_query_var( 'paged' );
-		$pagination = '<div class="pagination"><ul class="pagination">';
-		foreach ($pages as $page) {
-            $exploded = explode('>',$page);
+function dsi_bootstrap_pagination(\WP_Query $wp_query = null, $echo = true)
+{
+    if (null === $wp_query) {
+        global $wp_query;
+    }
+    $pages = paginate_links(
+        [
+            'base'         => str_replace(999999999, '%#%', esc_url(get_pagenum_link(999999999))),
+            'format'       => '%#%',
+            'current'      => max(1, get_query_var('paged')),
+            'total'        => $wp_query->max_num_pages,
+            'type'         => 'array',
+            'show_all'     => false,
+            'end_size'     => 3,
+            'mid_size'     => 1,
+            'prev_next'    => true,
+            'prev_text'    => __('<svg class="icon icon-primary"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#svg-arrow-left-small"></use></svg><span class="sr-only">Pagina precedente</span>'),
+            'next_text'    => __('<span class="sr-only">Pagina successiva</span><svg class="icon icon-primary"><use xmlns:xlink="http://www.w3.org/1999/xlink" href="#svg-arrow-right-small"></use></svg>'),
+            'add_args'     => false,
+            'add_fragment' => ''
+        ]
+    );
+    if (is_array($pages)) {
+        //$paged = ( get_query_var( 'paged' ) == 0 ) ? 1 : get_query_var( 'paged' );
+        $pagination = '<div class="pagination"><ul class="pagination">';
+        foreach ($pages as $page) {
+            $exploded = explode('>', $page);
             $i = 0;
             $aria_label = 'aria-label=';
             foreach ($exploded as $str) {
@@ -494,25 +512,25 @@ function dsi_bootstrap_pagination( \WP_Query $wp_query = null, $echo = true ) {
                     if (strpos($str, 'next') !== false) $aria_label .= "'Vai alla pagina successiva'";
                     elseif (strpos($str, 'prev') !== false) $aria_label .= "'Vai alla pagina precedente'";
                     else {
-                        $page_num_array = explode('/',$str);
+                        $page_num_array = explode('/', $str);
                         $page_num = $page_num_array[count($page_num_array) - 2];
-                        $aria_label .= "'Vai alla pagina ".$page_num."'";
+                        $aria_label .= "'Vai alla pagina " . $page_num . "'";
                     }
                     $exploded[$i] .= $aria_label;
                 }
                 ++$i;
             }
-            $page = implode('>',$exploded);
-			$pagination .= '<li class="page-item' . (strpos($page, 'current') !== false ? ' active' : '') . '"> ' . str_replace('page-numbers', 'page-link', $page) . '</li>';
-		}
-		$pagination .= '</ul></div>';
-		if ( $echo ) {
-			echo $pagination;
-		} else {
-			return $pagination;
-		}
-	}
-	return null;
+            $page = implode('>', $exploded);
+            $pagination .= '<li class="page-item' . (strpos($page, 'current') !== false ? ' active' : '') . '"> ' . str_replace('page-numbers', 'page-link', $page) . '</li>';
+        }
+        $pagination .= '</ul></div>';
+        if ($echo) {
+            echo $pagination;
+        } else {
+            return $pagination;
+        }
+    }
+    return null;
 }
 
 
@@ -522,29 +540,28 @@ function dsi_bootstrap_pagination( \WP_Query $wp_query = null, $echo = true ) {
  *
  * @return array
  */
-function dsi_get_post_types_grouped($type = "", $tag = false){
-	if($type == "")
-		$type = "any";
-	if($type === "school")
-		$post_types = array("documento", "luogo", "struttura", "page");
-	else if($type === "news")
-		$post_types = array("evento", "post", "circolare");
-	else if($type === "education")
-		$post_types = array("scheda_didattica", "scheda_progetto"); // todo: programma materia 		$post_types = array("programma_materia", "scheda_didattica", "scheda_progetto");
-	else if($type === "service")
-		$post_types = array("servizio", "indirizzo");
-	else
-		$post_types = array("evento", "post","circolare", "documento", "luogo", "scheda_didattica", "scheda_progetto", "servizio", "indirizzo", "struttura", "page"); // todo: programma materia $post_types = array("evento", "post","circolare", "documento", "luogo", "materia", "programma_materia", "scheda_didattica", "scheda_progetto", "servizio", "struttura", "page");
+function dsi_get_post_types_grouped($type = "", $tag = false)
+{
+    if ($type == "")
+        $type = "any";
+    if ($type === "school")
+        $post_types = array("documento", "luogo", "struttura", "page");
+    else if ($type === "news")
+        $post_types = array("evento", "post", "circolare");
+    else if ($type === "education")
+        $post_types = array("scheda_didattica", "scheda_progetto"); // todo: programma materia 		$post_types = array("programma_materia", "scheda_didattica", "scheda_progetto");
+    else if ($type === "service")
+        $post_types = array("servizio", "indirizzo");
+    else
+        $post_types = array("evento", "post", "circolare", "documento", "luogo", "scheda_didattica", "scheda_progetto", "servizio", "indirizzo", "struttura", "page"); // todo: programma materia $post_types = array("evento", "post","circolare", "documento", "luogo", "materia", "programma_materia", "scheda_didattica", "scheda_progetto", "servizio", "struttura", "page");
 
-	// rimuovo post types che non hanno la categoria
-	if($tag){
-		if (($key = array_search("page", $post_types)) !== false) {
-			unset($post_types[$key]);
-		}
-
-	}
-	return $post_types;
-
+    // rimuovo post types che non hanno la categoria
+    if ($tag) {
+        if (($key = array_search("page", $post_types)) !== false) {
+            unset($post_types[$key]);
+        }
+    }
+    return $post_types;
 }
 
 
@@ -555,17 +572,18 @@ function dsi_get_post_types_grouped($type = "", $tag = false){
  * @return string
  *
  */
-function dsi_get_post_types_group($post_type){
-	$group = "news";
-	if(in_array($post_type, array("documento", "luogo", "struttura", "page"))) // todo: programma materia if(in_array($post_type, array("documento", "luogo", "programma_materia", "struttura", "page")))
-		$group = "school";
-	else if(in_array($post_type, array("programma", "scheda_didattica", "scheda_progetto")))
-		$group = "education";
-	else if(in_array($post_type, array("servizio", "indirizzo")))
-		$group = "service";
+function dsi_get_post_types_group($post_type)
+{
+    $group = "news";
+    if (in_array($post_type, array("documento", "luogo", "struttura", "page"))) // todo: programma materia if(in_array($post_type, array("documento", "luogo", "programma_materia", "struttura", "page")))
+        $group = "school";
+    else if (in_array($post_type, array("programma", "scheda_didattica", "scheda_progetto")))
+        $group = "education";
+    else if (in_array($post_type, array("servizio", "indirizzo")))
+        $group = "service";
 
 
-	return $group;
+    return $group;
 }
 
 /**
@@ -574,15 +592,16 @@ function dsi_get_post_types_group($post_type){
  * ritorna il gruppo in italiano
  * @return string
  */
-function dsi_get_italian_name_group($group) {
-	$gruppo = "Novità";
-	if($group == "school")
-		$gruppo = "La Scuola";
-	else if($group == "education")
-		$gruppo = "Didattica";
-	else if($group == "service")
-		$gruppo = "Servizi";
-	
+function dsi_get_italian_name_group($group)
+{
+    $gruppo = "Novità";
+    if ($group == "school")
+        $gruppo = "La Scuola";
+    else if ($group == "education")
+        $gruppo = "Didattica";
+    else if ($group == "service")
+        $gruppo = "Servizi";
+
     return $gruppo;
 }
 
@@ -592,16 +611,17 @@ function dsi_get_italian_name_group($group) {
  * ritorna il suffisso della classe relativa al colore
  * @return string
  */
-function dsi_get_post_types_color_class($post_type) {
-	$class = "greendark";
-	$group = dsi_get_post_types_group($post_type);
-	if($group == "school")
-		$class = "redbrown";
-	else if($group == "education")
-		$class = "bluelectric";
-	else if($group == "service")
-		$class = "purplelight";
-	return $class;
+function dsi_get_post_types_color_class($post_type)
+{
+    $class = "greendark";
+    $group = dsi_get_post_types_group($post_type);
+    if ($group == "school")
+        $class = "redbrown";
+    else if ($group == "education")
+        $class = "bluelectric";
+    else if ($group == "service")
+        $class = "purplelight";
+    return $class;
 }
 
 /**
@@ -610,19 +630,20 @@ function dsi_get_post_types_color_class($post_type) {
  * ritorna il nome dell'svg utilizzato per la preview del post type
  * @return string
  */
-function dsi_get_post_types_icon_class($post_type) {
-	$icon = "newspaper";
-	$group = dsi_get_post_types_group($post_type);
-	if($group == "school")
-		$icon = "school-building";
-	else if($group == "education")
-		$icon = "school";
-	else if($group == "service")
-		$icon = "hand-point-up";
+function dsi_get_post_types_icon_class($post_type)
+{
+    $icon = "newspaper";
+    $group = dsi_get_post_types_group($post_type);
+    if ($group == "school")
+        $icon = "school-building";
+    else if ($group == "education")
+        $icon = "school";
+    else if ($group == "service")
+        $icon = "hand-point-up";
 
-	if($post_type == "documento")
-		$icon = "generic-document";
-		return $icon;
+    if ($post_type == "documento")
+        $icon = "generic-document";
+    return $icon;
 }
 
 
@@ -634,17 +655,17 @@ function dsi_get_post_types_icon_class($post_type) {
  *
  * @return bool|int
  */
-function dsi_count_grouped_posts($post_types){
-	if(!is_array($post_types))
-		return false;
-	$count = 0;
-	foreach ($post_types as $post_type){
-		$count_posts = wp_count_posts($post_type);
-		if(isset($count_posts->publish))
-			$count += $count_posts->publish;
-	}
-	return $count;
-
+function dsi_count_grouped_posts($post_types)
+{
+    if (!is_array($post_types))
+        return false;
+    $count = 0;
+    foreach ($post_types as $post_type) {
+        $count_posts = wp_count_posts($post_type);
+        if (isset($count_posts->publish))
+            $count += $count_posts->publish;
+    }
+    return $count;
 }
 
 /**
@@ -653,20 +674,21 @@ function dsi_count_grouped_posts($post_types){
  *
  * @return string|null
  */
-function dsi_get_template_page_url($TEMPLATE_NAME){
-	$pages = get_pages(array(
-		'meta_key' => '_wp_page_template',
-		'meta_value' => $TEMPLATE_NAME,
+function dsi_get_template_page_url($TEMPLATE_NAME)
+{
+    $pages = get_pages(array(
+        'meta_key' => '_wp_page_template',
+        'meta_value' => $TEMPLATE_NAME,
         'hierarchical' => 0
-	));
+    ));
 
-    if($pages){
-        foreach ($pages as $page){
-            if($page->ID)
+    if ($pages) {
+        foreach ($pages as $page) {
+            if ($page->ID)
                 return get_page_link($page->ID);
         }
     }
-	return null;
+    return null;
 }
 
 /**
@@ -675,16 +697,17 @@ function dsi_get_template_page_url($TEMPLATE_NAME){
  *
  * @return string|null
  */
-function dsi_get_template_page_id($TEMPLATE_NAME){
+function dsi_get_template_page_id($TEMPLATE_NAME)
+{
     $url = null;
     $pages = get_pages(array(
         'meta_key' => '_wp_page_template',
         'meta_value' => $TEMPLATE_NAME,
         'hierarchical' => 0
     ));
-    if($pages){
-        foreach ($pages as $page){
-            if($page->ID)
+    if ($pages) {
+        foreach ($pages as $page) {
+            if ($page->ID)
                 return $page->ID;
         }
     }
@@ -696,7 +719,8 @@ function dsi_get_template_page_id($TEMPLATE_NAME){
  * ritorna l'array dei feedback delle circolari
  * @return array
  */
-function dsi_get_circolari_feedback_options(){
+function dsi_get_circolari_feedback_options()
+{
     return array(
         "false" => __('Nessun Feedback ', 'design_scuole_italia'),
         'presa_visione' => __('Presa Visione', 'design_scuole_italia'),
@@ -711,19 +735,20 @@ function dsi_get_circolari_feedback_options(){
  * @param $post
  * @return bool
  */
-function dsi_user_can_sign_circolare($user, $post){
+function dsi_user_can_sign_circolare($user, $post)
+{
 
     $destinatari_circolari = dsi_get_meta("destinatari_circolari", "", $post->ID);
-    if($destinatari_circolari == "all"){
+    if ($destinatari_circolari == "all") {
         return true;
-    }elseif ($destinatari_circolari == "ruolo"){
+    } elseif ($destinatari_circolari == "ruolo") {
         $ruoli_circolari = dsi_get_meta("ruoli_circolari", "", $post->ID);
-        if( array_intersect($ruoli_circolari, $user->roles ) ) {
+        if (array_intersect($ruoli_circolari, $user->roles)) {
             return true;
         }
-    }elseif ($destinatari_circolari == "gruppo"){
+    } elseif ($destinatari_circolari == "gruppo") {
         $gruppi_circolari = dsi_get_meta("gruppi_circolari", "", $post->ID);
-        if(is_object_in_term($user->ID, "gruppo-utente", $gruppi_circolari)){
+        if (is_object_in_term($user->ID, "gruppo-utente", $gruppi_circolari)) {
             return true;
         }
     }
@@ -738,13 +763,14 @@ function dsi_user_can_sign_circolare($user, $post){
  * @param $post
  * @return bool
  */
-function dsi_user_has_signed_circolare($user, $post){
+function dsi_user_has_signed_circolare($user, $post)
+{
     $signed = get_post_meta($post->ID, "_dsi_has_signed", true);
-    if(!$signed)
+    if (!$signed)
         $signed = array();
-    if(in_array($user->ID, $signed)){
-        $sign = get_user_meta($user->ID, "_dsi_signed_".$post->ID, true);
-        if($sign)
+    if (in_array($user->ID, $signed)) {
+        $sign = get_user_meta($user->ID, "_dsi_signed_" . $post->ID, true);
+        if ($sign)
             return $sign;
 
         return true;
@@ -757,9 +783,10 @@ function dsi_user_has_signed_circolare($user, $post){
  * @param $post
  * @return bool
  */
-function dsi_is_circolare($post){
+function dsi_is_circolare($post)
+{
 
-    if($post->post_type == "circolare")
+    if ($post->post_type == "circolare")
         return true;
 
     return false;
@@ -771,9 +798,10 @@ function dsi_is_circolare($post){
  * @param $post
  * @return bool
  */
-function dsi_is_albo($post){
+function dsi_is_albo($post)
+{
 
-    if(has_term("albo-online", "tipologia-documento", $post))
+    if (has_term("albo-online", "tipologia-documento", $post))
         return true;
 
     return false;
@@ -782,14 +810,14 @@ function dsi_is_albo($post){
 /**
  * Converte l'anno scolastico nel formato da stampare
  */
-function dsi_convert_anno_scuola($anno){
-    if(is_string($anno) && ($anno != "")) {
+function dsi_convert_anno_scuola($anno)
+{
+    if (is_string($anno) && ($anno != "")) {
         $nextanno = $anno + 1;
         return $anno . "/" . $nextanno;
-    }else{
+    } else {
         return "";
     }
-
 }
 
 /**
@@ -797,9 +825,10 @@ function dsi_convert_anno_scuola($anno){
  * @param $post
  * @return bool
  */
-function dsi_is_scuola($post){
+function dsi_is_scuola($post)
+{
 
-    if(has_term("scuola", "tipologia-struttura", $post))
+    if (has_term("scuola", "tipologia-struttura", $post))
         return true;
 
     return false;
@@ -811,14 +840,16 @@ function dsi_is_scuola($post){
  * @param bool $year
  * @return false|int|string
  */
-function dsi_get_current_anno_scolastico($year = true){
+function dsi_get_current_anno_scolastico($year = true)
+{
     $today_month = date("n");
-    if($today_month < 8){
-        if($year) return date("Y")-1; else return dsi_convert_anno_scuola(date("Y")-1);
-    }else{
-        if($year) return date("Y"); else return dsi_convert_anno_scuola(date("Y"));
+    if ($today_month < 8) {
+        if ($year) return date("Y") - 1;
+        else return dsi_convert_anno_scuola(date("Y") - 1);
+    } else {
+        if ($year) return date("Y");
+        else return dsi_convert_anno_scuola(date("Y"));
     }
-
 }
 
 
@@ -829,147 +860,148 @@ function dsi_get_current_anno_scolastico($year = true){
  * @param $field
  * @return int|string
  */
-function dsi_sanitize_int( $value, $field_args, $field ) {
+function dsi_sanitize_int($value, $field_args, $field)
+{
     // Don't keep anything that's not numeric
-    if ( ! is_numeric( $value ) ) {
+    if (! is_numeric($value)) {
         $sanitized_value = '';
     } else {
         // Ok, let's clean it up.
-        $sanitized_value = absint( $value );
+        $sanitized_value = absint($value);
     }
     return $sanitized_value;
 }
 
 
-if(!function_exists("dsi_pluralize_string")) {
-    function dsi_pluralize_string($string){
-    switch ($string){
-        case "Biblioteca":
-            $string = "Biblioteche";
-            break;
+if (!function_exists("dsi_pluralize_string")) {
+    function dsi_pluralize_string($string)
+    {
+        switch ($string) {
+            case "Biblioteca":
+                $string = "Biblioteche";
+                break;
 
-        case "Palestra":
-            $string = "Palestre";
-            break;
+            case "Palestra":
+                $string = "Palestre";
+                break;
 
-        case "Edificio scolastico":
-            $string = "Edifici scolastici";
-            break;
+            case "Edificio scolastico":
+                $string = "Edifici scolastici";
+                break;
 
-        case "Teatro":
-            $string = "Teatri";
-            break;
+            case "Teatro":
+                $string = "Teatri";
+                break;
 
-        case "Laboratorio":
-            $string = "Laboratori";
-            break;
+            case "Laboratorio":
+                $string = "Laboratori";
+                break;
 
-        case "Giardino":
-            $string = "Giardini";
-            break;
+            case "Giardino":
+                $string = "Giardini";
+                break;
 
-        case "Dirigenza Scolastica":
-            $string = "Dirigenze Scolastiche";
-            break;
+            case "Dirigenza Scolastica":
+                $string = "Dirigenze Scolastiche";
+                break;
 
-        case "Segreteria":
-            $string = "Segreterie";
-            break;
+            case "Segreteria":
+                $string = "Segreterie";
+                break;
 
-        case "Scuola":
-            $string = "Scuole";
-            break;
+            case "Scuola":
+                $string = "Scuole";
+                break;
 
-        case "Commissione":
-            $string = "Commissioni";
-            break;
+            case "Commissione":
+                $string = "Commissioni";
+                break;
 
-        case "Organo Collegiale":
-            $string = "Organi Collegiali";
-            break;
+            case "Organo Collegiale":
+                $string = "Organi Collegiali";
+                break;
 
-        case "Associazione scolastica":
-            $string = "Associazioni scolastiche";
-            break;
+            case "Associazione scolastica":
+                $string = "Associazioni scolastiche";
+                break;
 
-        case "Mensa":
-            $string = "Mense";
-            break;
+            case "Mensa":
+                $string = "Mense";
+                break;
 
-        case "Documento Generico":
-            $string = "Documenti Generici";
-            break;
+            case "Documento Generico":
+                $string = "Documenti Generici";
+                break;
 
-        case "Bandi e Gare":
-            $string = "Bandi e Gare";
-            break;
+            case "Bandi e Gare":
+                $string = "Bandi e Gare";
+                break;
 
-        case "Contratto":
-            $string = "Contratti";
-            break;
+            case "Contratto":
+                $string = "Contratti";
+                break;
 
-        case "Delibera":
-            $string = "Delibere";
-            break;
+            case "Delibera":
+                $string = "Delibere";
+                break;
 
-        case "Verbale":
-            $string = "Verbali";
-            break;
+            case "Verbale":
+                $string = "Verbali";
+                break;
 
-        case "Regolamento":
-            $string = "Regolamenti";
-            break;
+            case "Regolamento":
+                $string = "Regolamenti";
+                break;
 
-        case "Documento Programmatico":
-            $string = "Documenti Programmatici";
-            break;
+            case "Documento Programmatico":
+                $string = "Documenti Programmatici";
+                break;
 
-        case "Documento Didattico":
-            $string = "Documenti Didattici";
-            break;
+            case "Documento Didattico":
+                $string = "Documenti Didattici";
+                break;
 
-        case "Modulistica":
-            $string = "Modulistica";
-            break;
+            case "Modulistica":
+                $string = "Modulistica";
+                break;
 
-        case "Albo online":
-            $string = "Albo online";
-            break;
+            case "Albo online":
+                $string = "Albo online";
+                break;
 
-        case "Progetto area scientifica":
-            $string = "Progetti area scientifica";
-            break;
+            case "Progetto area scientifica":
+                $string = "Progetti area scientifica";
+                break;
 
-        case "Progetto area umanistica":
-            $string = "Progetti area umanistica";
-            break;
+            case "Progetto area umanistica":
+                $string = "Progetti area umanistica";
+                break;
 
-        case "Progetto di integrazione":
-            $string = "Progetti di integrazione";
-            break;
+            case "Progetto di integrazione":
+                $string = "Progetti di integrazione";
+                break;
 
-        case "Progetto di orientamento":
-            $string = "Progetti di orientamento";
-            break;
+            case "Progetto di orientamento":
+                $string = "Progetti di orientamento";
+                break;
 
-        case "Progetto territorio e ambiente":
-            $string = "Progetti territorio e ambiente";
-            break;
+            case "Progetto territorio e ambiente":
+                $string = "Progetti territorio e ambiente";
+                break;
 
 
-        case "Indirizzo di Studio":
-            $string = "Indirizzi di studio";
-            break;
+            case "Indirizzo di Studio":
+                $string = "Indirizzi di studio";
+                break;
 
-        case "Scuola / Istituto":
-            $string = "Scuole / Istituti";
-            break;
+            case "Scuola / Istituto":
+                $string = "Scuole / Istituti";
+                break;
 
-        case "":
-            $string = "";
-            break;
-
-    }
+            case "":
+                $string = "";
+                break;
+        }
 
         return $string;
     }
@@ -979,16 +1011,16 @@ if(!function_exists("dsi_pluralize_string")) {
  * funzione per la gestione del nome autore
  */
 
-function dsi_get_display_name($user_id){
+function dsi_get_display_name($user_id)
+{
 
     $display = get_the_author_meta('display_name', $user_id);
     $nome = get_the_author_meta('first_name', $user_id);
     $cognome = get_the_author_meta('last_name', $user_id);
-    if(($nome != "") && ($cognome != ""))
-        return $nome." ".$cognome;
+    if (($nome != "") && ($cognome != ""))
+        return $nome . " " . $cognome;
     else
         return $display;
-
 }
 
 
@@ -1000,8 +1032,9 @@ function dsi_get_display_name($user_id){
  * @param  mixed  $okey Previous value
  * @return mixed
  */
-if(!function_exists("dsi_multi_array_search")) {
-    function dsi_multi_array_search($search_for, $search_in, $okey = false) {
+if (!function_exists("dsi_multi_array_search")) {
+    function dsi_multi_array_search($search_for, $search_in, $okey = false)
+    {
         foreach ($search_in as $key => $element) {
             $key = $okey ? $okey : $key;
             if (($element === $search_for) || (is_array($element) && $key = dsi_multi_array_search($search_for, $element, $key))) {
@@ -1022,8 +1055,9 @@ if(!function_exists("dsi_multi_array_search")) {
  * @param string $pad
  * @return string
  */
-if(!function_exists("dsi_truncate")) {
-    function dsi_truncate($string, $limit, $break = " ", $pad = "..."){
+if (!function_exists("dsi_truncate")) {
+    function dsi_truncate($string, $limit, $break = " ", $pad = "...")
+    {
         $string = html_entity_decode($string, ENT_QUOTES, "UTF-8");
 
         $string = strip_tags($string);
@@ -1044,21 +1078,22 @@ if(!function_exists("dsi_truncate")) {
 /**
  * get group related to current page
  */
-if(!function_exists("dsi_get_current_group")) {
-    function dsi_get_current_group() {
+if (!function_exists("dsi_get_current_group")) {
+    function dsi_get_current_group()
+    {
         if (is_front_page()) {
             return null;
         }
         if (is_tax()) {
-            $taxonomy = get_queried_object() -> taxonomy;
-            $term = get_queried_object() -> slug;
-            if ($taxonomy == 'tipologia-servizio'){
-               $tipo_post = 'servizio';
+            $taxonomy = get_queried_object()->taxonomy;
+            $term = get_queried_object()->slug;
+            if ($taxonomy == 'tipologia-servizio') {
+                $tipo_post = 'servizio';
             }
-            if ($taxonomy == 'tipologia-documento'){
-                $tipo_post ='documento';
+            if ($taxonomy == 'tipologia-documento') {
+                $tipo_post = 'documento';
             }
-            if ($taxonomy == 'tipologia-articolo'){
+            if ($taxonomy == 'tipologia-articolo') {
                 $tipo_post = 'post';
             }
             if ($tipo_post == 'documento' && $term == 'albo-online') {
@@ -1069,20 +1104,22 @@ if(!function_exists("dsi_get_current_group")) {
         if (is_author()) {
             return 'school';
         }
-        if ( is_archive()  ) {
-            $tipo_post = get_queried_object() -> name;
+        if (is_archive()) {
+            $tipo_post = get_queried_object()->name;
             return  dsi_get_post_types_group($tipo_post);
         }
         if (is_page()) {
             $rel_url = wp_make_link_relative(get_permalink());
             $rel_url =  preg_replace('/^' . preg_quote('/', '/') . '/', '', $rel_url);
             $group_slug = strtok($rel_url, '/');
-            switch($group_slug){
+            switch ($group_slug) {
                 case 'la-scuola':
                     return 'school';
-                case 'didattica' :
+                case 'didattica':
                     return 'education';
-                case 'novita': case 'evento': case 'circolare':
+                case 'novita':
+                case 'evento':
+                case 'circolare':
                     return 'news';
                 case 'servizi':
                     return 'service';
@@ -1091,12 +1128,12 @@ if(!function_exists("dsi_get_current_group")) {
         }
         $current_post_type = get_post_type();
         if ($current_post_type == 'documento') {
-            $term = wp_get_post_terms(get_the_ID(),'tipologia-documento');
-            if ($term[0]->slug == 'albo-online'){
+            $term = wp_get_post_terms(get_the_ID(), 'tipologia-documento');
+            if ($term[0]->slug == 'albo-online') {
                 return 'news';
             }
         }
-        if ( ($current_post_type != false)) {
+        if (($current_post_type != false)) {
             return dsi_get_post_types_group(get_post_type());
         }
         return null;
