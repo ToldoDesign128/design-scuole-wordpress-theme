@@ -71,6 +71,7 @@ $user_can_view_post = dsi_members_can_user_view_post(get_current_user_id(), $pos
         <?php get_template_part("template-parts/header/status"); ?>
 
 
+        <!-- Content Documento -->
         <section class="section bg-white">
             <div class="container container-border-top">
                 <div class="row variable-gutters">
