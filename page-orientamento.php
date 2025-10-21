@@ -39,7 +39,7 @@
                     <p class="mb-4">Ecco qua il nostro calendario con tutti gli appuntamenti e date.</p>
                 </div>
                 <div class="col-12 col-md-4 d-flex align-items-center justify-content-end">
-                    <a class="btn-lg-default" href="https://www.martinomartini.eu/wp-content/uploads/2023/09/Open-Days-Martini-2024-25.pdf" target="blank">
+                    <a class="btn-lg-default" href="https://www.martinomartini.eu/wp-content/uploads/2025/10/volantino-martino-martini-2025.pdf" target="blank">
                         <button class="w-auto">Calendario Open Days</button>
                     </a>
                 </div>
