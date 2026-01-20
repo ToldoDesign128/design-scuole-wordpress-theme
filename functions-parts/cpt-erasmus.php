@@ -46,6 +46,19 @@ function register_erasmus_post_type() {
         'context'      => 'normal',
         'priority'     => 'high',
         ) );
+
+        $cmb_aftercontent->add_field(array(
+        'name'             => 'Tipologia di documento',
+        'id'               => $prefix . 'wiki_test_radio', // da modificare e aggiungere il prefix
+        'type'             => 'radio',
+        'show_option_none' => false,
+        'options'          => array(
+            'call_2022' => __('Call 2022', 'cmb2'),
+            'call_2023' => __('Call 2023', 'cmb2'),
+            'call_2024' => __('Call 2024', 'cmb2'),
+            'call_2025' => __('Call 2025', 'cmb2'),
+        ),
+    ));
     
         // box per caricare file di erasmus
     
